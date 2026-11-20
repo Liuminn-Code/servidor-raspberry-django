@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Monitoreo Raspberry Pi</title>
+</head>
+<body>
+
+    <h1>Bitácora de Raspberry Pi 5</h1>
+
+    <a href="{% url 'crear' %}">Nuevo registro</a>
+
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>CPU (%)</th>
+            <th>RAM (%)</th>
+            <th>Temperatura (°C)</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+        </tr>
+
+        {% for registro in registros %}
+        <tr>
+            <td>{{ registro.id }}</td>
+            <td>{{ registro.cpu }}</td>
+            <td>{{ registro.ram }}</td>
+            <td>{{ registro.temperatura }}</td>
+            <td>{{ registro.fecha }}</td>
+
+            <td>
+                <a href="{% url 'editar' registro.id %}">Editar</a>
+
+                <a href="{% url 'eliminar' registro.id %}">Eliminar</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No existen registros.</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+</body>
+</html>
+
