@@ -1,3 +1,5 @@
+from django.http import JsonResponse
+from .metricas import iniciar_monitoreo, obtener_metricas
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import RegistroMetrica
 from .forms import RegistroMetricaForm
@@ -52,3 +54,6 @@ def eliminar(request, id):
     return render(request, 'monitoreo/eliminar.html', {
         'registro': registro
     })
+def metricas_actuales(request):
+    iniciar_monitoreo()
+    return JsonResponse(obtener_metricas())

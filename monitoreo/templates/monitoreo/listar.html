@@ -11,6 +11,7 @@
     <link rel="stylesheet"
           href="{% static 'monitoreo/css/listar.css' %}">
 </head>
+<script src="{% static 'monitoreo/js/metricas.js' %}"></script>
 <body>
 
     <main class="contenedor">
@@ -26,26 +27,38 @@
             </a>
         </header>
 
-        {% with ultimo=registros.first %}
-        <section class="metricas">
+      <section class="metricas">
 
-            <div class="tarjeta">
-                <h3>Uso de CPU</h3>
-                <span>{{ ultimo.cpu|default_if_none:"--" }} %</span>
-            </div>
+    <div class="tarjeta">
+        <h3>Uso de CPU</h3>
+        <span id="cpu">-- %</span>
 
-            <div class="tarjeta">
-                <h3>Memoria RAM</h3>
-                <span>{{ ultimo.ram|default_if_none:"--" }} %</span>
-            </div>
+        <div class="barra">
+            <div id="barra-cpu"></div>
+        </div>
+    </div>
 
-            <div class="tarjeta">
-                <h3>Temperatura</h3>
-                <span>{{ ultimo.temperatura|default_if_none:"--" }} °C</span>
-            </div>
+    <div class="tarjeta">
+        <h3>Memoria RAM</h3>
+        <span id="ram">-- %</span>
 
-        </section>
-        {% endwith %}
+        <div class="barra">
+            <div id="barra-ram"></div>
+        </div>
+    </div>
+
+    <div class="tarjeta">
+        <h3>Temperatura</h3>
+        <span id="temperatura">-- °C</span>
+
+        <div class="barra">
+            <div id="barra-temperatura"></div>
+        </div>
+    </div>
+
+</section>
+
+<p id="estado">Conectando con el servidor...</p>
 
         <section class="tabla-contenedor">
 
