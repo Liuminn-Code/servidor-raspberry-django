@@ -1,47 +1,103 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <link rel="stylesheet" href="{% static 'monitoreo/css/listar.css' %}">	
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monitoreo Raspberry Pi</title>
+
+    <link rel="stylesheet"
+          href="{% static 'monitoreo/css/listar.css' %}">
 </head>
 <body>
 
-    <h1>Bitácora de Raspberry Pi 5</h1>
+    <main class="contenedor">
 
-    <a href="{% url 'crear' %}">Nuevo registro</a>
+        <header>
+            <div>
+                <h1>Raspberry Pi 5</h1>
+                <p>Panel de monitoreo del sistema</p>
+            </div>
 
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>CPU (%)</th>
-            <th>RAM (%)</th>
-            <th>Temperatura (°C)</th>
-            <th>Fecha</th>
-            <th>Acciones</th>
-        </tr>
+            <a class="btn nuevo" href="{% url 'crear' %}">
+                + Nuevo registro
+            </a>
+        </header>
 
-        {% for registro in registros %}
-        <tr>
-            <td>{{ registro.id }}</td>
-            <td>{{ registro.cpu }}</td>
-            <td>{{ registro.ram }}</td>
-            <td>{{ registro.temperatura }}</td>
-            <td>{{ registro.fecha }}</td>
+        {% with ultimo=registros.first %}
+        <section class="metricas">
 
-            <td>
-                <a href="{% url 'editar' registro.id %}">Editar</a>
+            <div class="tarjeta">
+                <h3>Uso de CPU</h3>
+                <span>{{ ultimo.cpu|default_if_none:"--" }} %</span>
+            </div>
 
-                <a href="{% url 'eliminar' registro.id %}">Eliminar</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="6">No existen registros.</td>
-        </tr>
-        {% endfor %}
+            <div class="tarjeta">
+                <h3>Memoria RAM</h3>
+                <span>{{ ultimo.ram|default_if_none:"--" }} %</span>
+            </div>
 
-    </table>
+            <div class="tarjeta">
+                <h3>Temperatura</h3>
+                <span>{{ ultimo.temperatura|default_if_none:"--" }} °C</span>
+            </div>
+
+        </section>
+        {% endwith %}
+
+        <section class="tabla-contenedor">
+
+            <h2>Registros del sistema</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>CPU (%)</th>
+                        <th>RAM (%)</th>
+                        <th>Temperatura (°C)</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for registro in registros %}
+                    <tr>
+                        <td>{{ registro.id }}</td>
+                        <td>{{ registro.cpu }}</td>
+                        <td>{{ registro.ram }}</td>
+                        <td>{{ registro.temperatura }}</td>
+                        <td>{{ registro.fecha|date:"d/m/Y H:i" }}</td>
+
+                        <td class="acciones">
+                            <a class="btn editar"
+                               href="{% url 'editar' registro.id %}">
+                                Editar
+                            </a>
+
+                            <a class="btn eliminar"
+                               href="{% url 'eliminar' registro.id %}">
+                                Eliminar
+                            </a>
+                        </td>
+                    </tr>
+
+                    {% empty %}
+                    <tr>
+                        <td colspan="6">
+                            No existen registros.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </section>
+
+    </main>
 
 </body>
 </html>
-

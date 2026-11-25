@@ -1,23 +1,47 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <link rel="stylesheet" href="{% static 'monitoreo/css/formulario.css' %}">	    
     <meta charset="UTF-8">
-    <title>Registro de métricas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de métricas</title>
+
+    <link rel="stylesheet"
+          href="{% static 'monitoreo/css/formulario.css' %}">
 </head>
 <body>
 
-    <h1>Registrar métricas</h1>
+    <main class="contenedor">
 
-    <form method="POST">
-        {% csrf_token %}
+        {% if form.instance.pk %}
+            <h1>Editar registro</h1>
+        {% else %}
+            <h1>Registrar métricas</h1>
+        {% endif %}
 
-        {{ form.as_p }}
+        <p class="descripcion">
+            Ingresa los datos del sistema.
+        </p>
 
-        <button type="submit">Guardar</button>
-    </form>
+        <form method="POST">
 
-    <a href="{% url 'listar' %}">Volver</a>
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit">
+                Guardar registro
+            </button>
+
+        </form>
+
+        <a class="volver" href="{% url 'listar' %}">
+            Volver al listado
+        </a>
+
+    </main>
 
 </body>
 </html>
-
